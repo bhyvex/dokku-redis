@@ -10,6 +10,12 @@ fi
 cd $DOKKU_ROOT
 echo "Dokku version $DOKKU_VERSION"
 git checkout $DOKKU_VERSION > /dev/null
+if grep go-build Makefile > /dev/null; then
+  mv "$BIN_STUBS/docker" "$BIN_STUBS/docker-stub"
+  make go-build
+  sudo groupadd dokku
+  mv "$BIN_STUBS/docker-stub" "$BIN_STUBS/docker"
+fi
 cd -
 
 source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/config"
